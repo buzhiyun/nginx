@@ -1,15 +1,22 @@
-# This file is a template, and might need editing before it works on your project.
-FROM php:7.0-apache
+# nginx容器
 
-# Customize any core extensions here
-#RUN apt-get update && apt-get install -y \
-#        libfreetype6-dev \
-#        libjpeg62-turbo-dev \
-#        libmcrypt-dev \
-#        libpng12-dev \
-#    && docker-php-ext-install -j$(nproc) iconv mcrypt \
-#    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-#    && docker-php-ext-install -j$(nproc) gd
 
-COPY config/php.ini /usr/local/etc/php/
-COPY src/ /var/www/html/
+### 后续要增加的server站点
+- http项目的.conf文件 映射到容器内的 /etc/nginx/conf.d 下
+- 流转发项目的.conf文件 映射到容器内的 /etc/nginx/stream.d 下
+
+
+##### 示例的docker-compose.yml
+```yaml
+nginx:
+  image: test:nginx
+  container_name: nginx
+  volumes:
+    - ./conf.d:/etc/nginx/conf.d
+    - ./stream.d:/etc/nginx/stream.d
+  ports:
+    - 80:80
+    - 8080:8080 
+    - 7011:7011
+````
+
