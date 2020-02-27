@@ -21,3 +21,14 @@ nginx:
     - 7011:7011
 ````
 
+如果要调试，需要安装一些工具，可以更新apt安装源
+```bash
+# 外网替换安装源
+echo -e 'deb http://mirrors.aliyun.com/debian/ buster main non-free contrib\ndeb http://mirrors.aliyun.com/debian-security buster/updates main\ndeb http://mirrors.aliyun.com/debian/ buster-updates main non-free contrib\ndeb http://mirrors.aliyun.com/debian/ buster-backports main non-free contrib' > /etc/apt/sources.list  
+
+# 内网替换安装源
+echo -e 'deb http://mirrors.cloud.aliyuncs.com/debian/ buster main non-free contrib\ndeb http://mirrors.cloud.aliyuncs.com/debian-security buster/updates main\ndeb http://mirrors.cloud.aliyuncs.com/debian/ buster-updates main non-free contrib\ndeb http://mirrors.cloud.aliyuncs.com/debian/ buster-backports main non-free contrib' > /etc/apt/sources.list  
+
+# 执行完之后 
+apt-get update
+```
