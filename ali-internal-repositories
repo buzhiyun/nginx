@@ -1,0 +1,2 @@
+sed -i 's#dl-cdn.alpinelinux.org#mirrors.cloud.aliyuncs.com#g' /etc/apk/repositories
+sed -i 's#mirrors.aliyun.com#mirrors.cloud.aliyuncs.com#g' /etc/apk/repositories
