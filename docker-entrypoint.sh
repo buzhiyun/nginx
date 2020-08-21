@@ -4,12 +4,17 @@
 #set -e
 
 function checkConf() {
+    md5check=`ls -lR /etc/nginx/ | md5sum`
     while(true)
-    sleep 600
+    sleep 10
+    md5checkNew=`ls -lR /etc/nginx/ | md5sum`
     do
-        ST=`nginx -t`
-        if [ "$ST" == "0" ]; then
-            nginx -s reload
+        if [ "$md5check" != "$md5checkNew" ];then
+            nginx -t
+            if [ $? -eq 0 ]; then
+                nginx -s reload
+                md5check=`ls -lR /etc/nginx/ | md5sum`
+            fi
         fi
 
     done  
