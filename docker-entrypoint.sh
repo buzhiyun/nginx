@@ -56,5 +56,19 @@ fi
 
 checkConf &
 
-exec "$@"
+if [[ "$WORK_USER" != "nginx" ]]; then
+  echo try add user ${WORK_USER}
+  if [ -z $WORK_USERID ];then
+    adduser -D ${WORK_USER}
+    echo 'create user' ${WORK_USER}
+  else
+    adduser -D -u ${WORK_USERID} ${WORK_USER}
+    echo 'create user' ${WORK_USER} ',user id:'  ${WORK_USERID}
+  fi
+fi
+
+echo worker_processes ${WORK_PROCESSES} ", user" ${WORK_USER}
+#exec "nginx -g 'daemon off;worker_processes ${WORK_PROCESSES};'"
+nginx -g 'daemon off;worker_processes '${WORK_PROCESSES}';user '${WORK_USER}';'
+#exec "$@"
 
