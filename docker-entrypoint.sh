@@ -33,7 +33,7 @@ if [ "$1" = "nginx" -o "$1" = "nginx-debug" ]; then
         echo >&3 "$0: /docker-entrypoint.d/ is not empty, will attempt to perform configuration"
 
         echo >&3 "$0: Looking for shell scripts in /docker-entrypoint.d/"
-        find "/docker-entrypoint.d/" -follow -type f -print | sort -n | while read -r f; do
+        find "/docker-entrypoint.d/" -follow -type f -print | sort -V | while read -r f; do
             case "$f" in
                 *.sh)
                     if [ -x "$f" ]; then
@@ -56,5 +56,19 @@ fi
 
 checkConf &
 
-exec "$@"
+if [[ "$WORK_USER" != "nginx" ]]; then
+  echo try add user ${WORK_USER}
+  if [ -z $WORK_USERID ];then
+    adduser -D ${WORK_USER}
+    echo 'create user' ${WORK_USER}
+  else
+    adduser -D -u ${WORK_USERID} ${WORK_USER}
+    echo 'create user' ${WORK_USER} ',user id:'  ${WORK_USERID}
+  fi
+fi
+
+echo worker_processes ${WORK_PROCESSES} ", user" ${WORK_USER}
+#exec "nginx -g 'daemon off;worker_processes ${WORK_PROCESSES};'"
+nginx -g 'daemon off;worker_processes '${WORK_PROCESSES}';user '${WORK_USER}';'
+#exec "$@"
 
