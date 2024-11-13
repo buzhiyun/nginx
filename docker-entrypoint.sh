@@ -3,6 +3,8 @@
 
 #set -e
 
+ln -s /usr/share/nginx/html /etc/nginx/html
+
 function checkConf() {
     md5check=`ls -lR /etc/nginx/ | md5sum`
     while(true)
