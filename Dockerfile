@@ -1,4 +1,4 @@
-FROM nginx:1.26.1-alpine3.19
+FROM nginx:1.26.2-alpine3.20
 
 ADD nginx.conf /etc/nginx/nginx.conf
 ADD ali-* /usr/local/sbin/
