@@ -59,8 +59,23 @@ entrypoint_log() {
 
 checkConf &
 
+
+cp /etc/nginx/nginx.conf /etc/nginx/.nginx.conf.temp
+
+# 检查是否有 WORK_PROCESSES 环境变量，如果没有则默认为 4
+if [ -n $WORK_PROCESSES ];then
+  WORK_PROCESSES=${WORK_PROCESSES}
+  echo "worker_processes ${WORK_PROCESSES};" | cat - /etc/nginx/nginx.conf > /etc/nginx/.nginx.conf.temp
+  # echo "worker_processes ${WORK_PROCESSES};" | cat - /etc/nginx/nginx.conf > /etc/nginx/nginx.conf
+fi
+
+
+# 检查是否有 WORK_USER 环境变量，如果没有则默认为 nginx
 if [[ "$WORK_USER" != "nginx" ]]; then
   entrypoint_log try add user ${WORK_USER}
+  # echo "user ${WORK_USER};" | cat - /etc/nginx/nginx.conf > /etc/nginx/nginx.conf
+
+  # 检查是否有 WORK_USERID 环境变量，如果没有则默认为 1000
   if [ -z $WORK_USERID ];then
     adduser -D ${WORK_USER}
     entrypoint_log 'create user' ${WORK_USER}
@@ -69,10 +84,12 @@ if [[ "$WORK_USER" != "nginx" ]]; then
     entrypoint_log 'create user' ${WORK_USER} ',user id:'  ${WORK_USERID}
   fi
 fi
+echo "user ${WORK_USER};" | cat - /etc/nginx/.nginx.conf.temp > /etc/nginx/nginx.conf
 
 entrypoint_log worker_processes ${WORK_PROCESSES} ", user" ${WORK_USER}
 #exec "nginx -g 'daemon off;worker_processes ${WORK_PROCESSES};'"
-nginx -g 'daemon off;worker_processes '${WORK_PROCESSES}';user '${WORK_USER}';'
+# nginx -g 'daemon off;worker_processes '${WORK_PROCESSES}';user '${WORK_USER}';'
+# nginx -g 'daemon off;'
 
-#exec "$@"
+exec "$@"
 

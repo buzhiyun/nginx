@@ -1,4 +1,4 @@
-FROM nginx:1.26.2-alpine3.20
+FROM nginx:1.26.3-alpine3.20
 
 ADD nginx.conf /etc/nginx/nginx.conf
 ADD ali-* /usr/local/sbin/
@@ -10,5 +10,5 @@ ADD docker-entrypoint.sh /
 ENV WORK_PROCESSES=4
 ENV WORK_USER=nginx
 # ENTRYPOINT []
-CMD []
-# CMD ["nginx","-g","daemon off;worker_processes $WORK_PROCESSES;"]
+# CMD []
+CMD ["nginx", "-g", "daemon off;"]
