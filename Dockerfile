@@ -1,6 +1,6 @@
 FROM nginx:1.26.3-alpine3.20
 
-ADD nginx.conf /etc/nginx/nginx.conf
+ADD nginx.conf /etc/nginx/nginx.conf.temp
 ADD ali-* /usr/local/sbin/
 ADD docker-entrypoint.sh /
 #RUN rm /docker-entrypoint.d/30-tune-worker-processes.sh

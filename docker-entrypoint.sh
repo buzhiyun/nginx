@@ -60,12 +60,12 @@ entrypoint_log() {
 checkConf &
 
 
-cp /etc/nginx/nginx.conf /etc/nginx/.nginx.conf.temp
+# cp /etc/nginx/nginx.conf /etc/nginx/.nginx.conf.temp
 
 # 检查是否有 WORK_PROCESSES 环境变量，如果没有则默认为 4
 if [ -n $WORK_PROCESSES ];then
   WORK_PROCESSES=${WORK_PROCESSES}
-  echo "worker_processes ${WORK_PROCESSES};" | cat - /etc/nginx/nginx.conf > /etc/nginx/.nginx.conf.temp
+  echo "worker_processes ${WORK_PROCESSES};" | cat - /etc/nginx/nginx.conf.temp > /etc/nginx/.nginx.conf.temp
   # echo "worker_processes ${WORK_PROCESSES};" | cat - /etc/nginx/nginx.conf > /etc/nginx/nginx.conf
 fi
 
